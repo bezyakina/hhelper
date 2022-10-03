@@ -4,7 +4,7 @@
   "description": "Useful scripts for hh.ru",
   "main": "index.js",
   "scripts": {
-    "test": "npx playwright test update-resumes.spec.ts --headed"
+    "test": "npx playwright test hh-scripts.spec.ts --headed"
   },
   "keywords": [],
   "author": "Elizaveta Bezyakina <elizaveta.bezyakina@yandex.ru>",

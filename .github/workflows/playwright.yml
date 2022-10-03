@@ -1,4 +1,4 @@
-name: Playwright Tests
+name: Run hh-scripts
 on:
   schedule:
     - cron: "10 3,7,11,15,19,23 * * *"
