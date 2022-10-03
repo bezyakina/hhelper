@@ -1,0 +1,15 @@
+{
+  "name": "hhelper",
+  "version": "1.0.0",
+  "description": "Useful scripts for hh.ru",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test update-resumes.spec.ts --headed"
+  },
+  "keywords": [],
+  "author": "Elizaveta Bezyakina <elizaveta.bezyakina@yandex.ru>",
+  "license": "SEE LICENSE IN LICENSE file",
+  "devDependencies": {
+    "@playwright/test": "1.26.1"
+  }
+}
