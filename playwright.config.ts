@@ -5,13 +5,11 @@ const config: PlaywrightTestConfig = {
   testDir: "./src",
   timeout: 30 * 1000,
   expect: {
-    timeout: 5000,
+    timeout: 10000,
   },
-  retries: 0,
-  workers: 1,
+  reporter: "html",
   use: {
-    actionTimeout: 0,
-    trace: "on-first-retry",
+    screenshot: "only-on-failure",
   },
   projects: [
     {

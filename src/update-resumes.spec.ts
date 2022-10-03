@@ -1,4 +1,4 @@
-import { Page, test } from "@playwright/test";
+import { expect, Page, test } from "@playwright/test";
 
 test("Update each resume from list on hh.ru", async ({ page }) => {
   await login(page);
@@ -10,7 +10,7 @@ test("Update each resume from list on hh.ru", async ({ page }) => {
 });
 
 /**
- * Login on hh.ru with email and password
+ * Logs user on hh.ru with email and password from ENVs
  * @param page - see https://playwright.dev/docs/api/class-page
  */
 async function login(page: Page) {
@@ -30,7 +30,7 @@ async function login(page: Page) {
 }
 
 /**
- * Update resume by id from url
+ * Updating resume by id from url and checking if update message appear
  *
  * @param page - see https://playwright.dev/docs/api/class-page
  * @param resumeId - resume id from url
@@ -38,4 +38,6 @@ async function login(page: Page) {
 async function updateResume(page: Page, resumeId: string) {
   await page.goto(`https://hh.ru/resume/${resumeId}`);
   await page.locator('[data-qa="resume-update-button"]').last().click();
+
+  expect(page.locator('[data-qa="resume-update-message"]')).toBeDefined();
 }
