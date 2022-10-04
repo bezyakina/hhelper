@@ -7,6 +7,8 @@ const passwordField = '[data-qa="login-input-password"]';
 const relocationWarningConfirmButton = '[data-qa="relocation-warning-confirm"]';
 const resumeUpdateButton = '[data-qa="resume-update-button"]';
 const resumeUpdateMessage = '[data-qa="resume-update-message"]';
+const vacancyItem = '[class="serp-item"]';
+const vacancyTitle = '[data-qa="serp-item__title"]';
 const vacancyResponseButtons = '[data-qa="vacancy-serp__vacancy_response"]';
 const vacancyResponseLetterField =
   '[data-qa="vacancy-response-popup-form-letter-input"]';
@@ -37,7 +39,7 @@ test("Apply for all vacancies from job filter", async () => {
  * @param page - see https://playwright.dev/docs/api/class-page
  */
 async function login(page: Page) {
-  await page.goto("/account/login");
+  await page.goto("/account/login", { waitUntil: "load" });
   await page.click(loginByPasswordButton);
   await page.locator(emailField).fill(process.env.EMAIL ?? "");
   await page.locator(passwordField).fill(process.env.PASSWORD ?? "");
@@ -69,20 +71,34 @@ async function updateResume(page: Page, resumeId: string) {
 async function applyForVacanciesFromFilter(page: Page) {
   await page.goto(`/search/vacancy?${process.env.JOB_FILTER}`);
 
-  const vacancies = await page.locator(vacancyResponseButtons);
-  const vacanciesCount = await vacancies.count();
+  const vacancyItems = await page.locator(vacancyItem);
+  const vacancyTitles = await page.locator(vacancyTitle);
+  const vacancyResponse = await page.locator(vacancyResponseButtons);
+  const vacancyCounts = await vacancyItems.count();
 
-  for (let i = 0; i < vacanciesCount; i++) {
-    try {
-      await vacancies.nth(i).click();
+  for (let i = 0; i < vacancyCounts; i++) {
+    const itemText = await vacancyItems.nth(i).allInnerTexts();
+
+    if (itemText[0].includes("Откликнуться")) {
+      const vacancyLink = await vacancyTitles.nth(i).getAttribute("href");
+      const itemTitle = await vacancyTitles.nth(i).allTextContents();
+
+      await vacancyResponse.nth(i).click();
       try {
         await page.locator(relocationWarningConfirmButton).click();
       } catch {}
       await page.locator(vacancyResponseLetterToggle).click();
-      await page
-        .locator(vacancyResponseLetterField)
-        .fill(process.env.LETTER ?? "");
+
+      const coverLetterText =
+        process.env.LETTER?.replace(/vacancyName/g, itemTitle[0]) ?? "";
+
+      await page.locator(vacancyResponseLetterField).fill(coverLetterText);
       await page.locator(vacancyResponseSubmitButton).click();
-    } catch {}
+
+      console.log(
+        "The response was successfully sent for the vacancy:",
+        vacancyLink
+      );
+    }
   }
 }
