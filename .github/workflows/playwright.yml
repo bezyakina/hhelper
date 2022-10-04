@@ -20,6 +20,8 @@ jobs:
           EMAIL: ${{ secrets.EMAIL }}
           PASSWORD: ${{ secrets.PASSWORD }}
           RESUME_IDS: ${{ secrets.RESUME_IDS }}
+          JOB_FILTER: ${{ secrets.JOB_FILTER }}
+          LETTER: ${{ secrets.LETTER }}
         run: npx playwright test
       - uses: actions/upload-artifact@v2
         if: always()

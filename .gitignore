@@ -4,3 +4,4 @@ node_modules/
 /playwright/.cache/
 /recordings/
 .env
+.DS_Store
