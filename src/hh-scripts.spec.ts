@@ -1,7 +1,5 @@
 import { expect, Page, test } from "@playwright/test";
 
-const waitUntil = "domcontentloaded";
-
 const emailField = '[data-qa="login-input-username"]';
 const loginByPasswordButton = '[data-qa="expand-login-by-password"]';
 const loginSubmitButton = '[data-qa="account-login-submit"]';
@@ -39,16 +37,14 @@ test("Apply for all vacancies from job filter", async () => {
  * @param page - see https://playwright.dev/docs/api/class-page
  */
 async function login(page: Page) {
-  await page.goto("/account/login", {
-    waitUntil,
-  });
+  await page.goto("/account/login");
   await page.click(loginByPasswordButton);
   await page.locator(emailField).fill(process.env.EMAIL ?? "");
   await page.locator(passwordField).fill(process.env.PASSWORD ?? "");
   await page.click(loginSubmitButton);
   await page.waitForNavigation({
     url: "/?hhtmFrom=account_login",
-    waitUntil,
+    waitUntil: "commit",
   });
 }
 
@@ -71,9 +67,7 @@ async function updateResume(page: Page, resumeId: string) {
  * @param page - see https://playwright.dev/docs/api/class-page
  */
 async function applyForVacanciesFromFilter(page: Page) {
-  await page.goto(`/search/vacancy?${process.env.JOB_FILTER}`, {
-    waitUntil,
-  });
+  await page.goto(`/search/vacancy?${process.env.JOB_FILTER}`);
 
   const vacancies = await page.locator(vacancyResponseButtons);
   const vacanciesCount = await vacancies.count();
