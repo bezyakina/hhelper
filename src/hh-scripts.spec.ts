@@ -17,7 +17,7 @@ const vacancyResponseSubmitButton = '[data-qa="vacancy-response-submit-popup"]';
 let page: Page;
 
 test.beforeAll(async ({ browser }) => {
-  page = await browser.newPage();
+  page = await browser.newPage({ recordVideo: { dir: "./recordings" } });
   await login(page);
 });
 

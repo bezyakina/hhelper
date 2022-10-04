@@ -12,6 +12,7 @@ const config: PlaywrightTestConfig = {
     actionTimeout: 15000,
     navigationTimeout: 15000,
     screenshot: "only-on-failure",
+    video: "on",
     baseURL: "https://hh.ru",
   },
   reportSlowTests: undefined,

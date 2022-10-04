@@ -1,7 +1,7 @@
-name: Run hh-scripts
+name: hhelper
 on:
   schedule:
-    - cron: "10 8,12,16,20 * * *"
+    - cron: "10 8,13,18 * * *"
 jobs:
   test:
     timeout-minutes: 60
@@ -15,7 +15,7 @@ jobs:
         run: npm ci
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
-      - name: Run Playwright tests
+      - name: Run hh-scripts
         env:
           EMAIL: ${{ secrets.EMAIL }}
           PASSWORD: ${{ secrets.PASSWORD }}
@@ -24,6 +24,8 @@ jobs:
       - uses: actions/upload-artifact@v2
         if: always()
         with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
+          name: artifacts
+          path: |
+            playwright-report/
+            recordings/
+          retention-days: 1
