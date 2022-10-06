@@ -90,7 +90,10 @@ async function applyForVacanciesFromFilter(page: Page) {
       await page.locator(vacancyResponseLetterToggle).click();
 
       const coverLetterText =
-        process.env.LETTER?.replace(/vacancyName/g, itemTitle[0]) ?? "";
+        process.env.LETTER?.replace(/\\n/g, "\n").replace(
+          /vacancyName/g,
+          itemTitle[0]
+        ) ?? "";
 
       await page.locator(vacancyResponseLetterField).fill(coverLetterText);
       await page.locator(vacancyResponseSubmitButton).click();
